@@ -1,17 +1,17 @@
 # Matterport MaskRCNN model
-Matterport MaskRCNN model is an implementation of the MaskRCNN object detection algorithm \
-The original program was created using TensorFlow 1.3 and Keras 2.0.8. Unfortunately, the model does not work when one uses tensorflow version >= 2.0.0. 
+Matterport MaskRCNN model is an implementation of the MaskRCNN object detection algorithm 
+The original program was created using TensorFlow 1.3 and Keras 2.0.8. Unfortunately, the model does not work when one uses TensorFlow version >= 2.0.0. 
 
-In this repository fixes many of the issues when one encounters when using the orginal MaskRCNN model from Matterport using tensorflow 2.2.0.
+This repository fixes many of the issues when one encounters when using the original MaskRCNN model from Matterport using TensorFlow 2.2.0.
 
 Most important changes:
-A custom model class which inherit the keras model class is used to create the model. This allows one to modify how the model trains bus creating the functions train_step and test_step (see https://www.tensorflow.org/guide/keras/customizing_what_happens_in_fit)
+A custom model class which inherit the Keras model class is used to create the model. This allows one to modify how the model trains by creating the functions train_step and test_step (see https://www.tensorflow.org/guide/keras/customizing_what_happens_in_fit)
 
-When training the model the anchors are created within the data generator and given as an input to the model instead of using the lambda expression.
+When training the model, the anchors are created within the data generator and given as an input to the model instead of using the lambda expression.
 Also, when training the input_gt_boxes boxes of the model are normalized within the data generator instead of within the model itself. This makes it a bit slower however a *"_SymbolicException: Inputs to eager execution function cannot be Keras symbolic tensors"* error is raised when one does the normalization within the model itself. 
 
 
-Furthermore, a new datagenerator is used: The keras sequence data generator (tf.keras.utils.Sequence). This new generator is required as the model entered an infinite loop when one uses the orginal matterport data generator.
+Furthermore, a new data generator is used: The Keras sequence data generator (tf.keras.utils.Sequence). This new generator is required as the model entered an infinite loop when one uses the original Matterport data generator.
 
 
 # Mask R-CNN for Object Detection and Segmentation
