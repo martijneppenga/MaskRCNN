@@ -1,3 +1,19 @@
+# Matterport MaskRCNN model
+Matterport MaskRCNN model is an implementation of the MaskRCNN object detection algorithm \
+The original program was created using TensorFlow 1.3 and Keras 2.0.8. Unfortunately, the model does not work when one uses tensorflow version >= 2.0.0. 
+
+In this repository fixes many of the issues when one encounters when using the orginal MaskRCNN model from Matterport using tensorflow 2.2.0.
+
+Most important changes:
+A custom model class which inherit the keras model class is used to create the model. This allows one to modify how the model trains bus creating the functions train_step and test_step (see https://www.tensorflow.org/guide/keras/customizing_what_happens_in_fit)
+
+When training the model the anchors are created within the data generator and given as an input to the model instead of using the lambda expression.
+Also, when training the input_gt_boxes boxes of the model are normalized within the data generator instead of within the model itself. This makes it a bit slower however a *"_SymbolicException: Inputs to eager execution function cannot be Keras symbolic tensors"* error is raised when one does the normalization within the model itself. 
+
+
+Furthermore, a new datagenerator is used: The keras sequence data generator (tf.keras.utils.Sequence). This new generator is required as the model entered an infinite loop when one uses the orginal matterport data generator.
+
+
 # Mask R-CNN for Object Detection and Segmentation
 
 This is an implementation of [Mask R-CNN](https://arxiv.org/abs/1703.06870) on Python 3, Keras, and TensorFlow. The model generates bounding boxes and segmentation masks for each instance of an object in the image. It's based on Feature Pyramid Network (FPN) and a ResNet101 backbone.
@@ -164,7 +180,7 @@ Contributions to this repository are welcome. Examples of things you can contrib
 You can also [join our team](https://matterport.com/careers/) and help us build even more projects like this one.
 
 ## Requirements
-Python 3.4, TensorFlow 1.3, Keras 2.0.8 and other common packages listed in `requirements.txt`.
+Python 3.4, TensorFlow 2.2.0, and other common packages listed in `requirements.txt`.
 
 ### MS COCO Requirements:
 To train or test on MS COCO, you'll also need:
